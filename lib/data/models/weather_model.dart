@@ -241,7 +241,10 @@ class WeatherModel {
     });
 
     return WeatherModel(
-      cityName: json['timezone'] as String? ?? 'Unknown',
+      // Prefer explicit cityName passed from service; fall back to timezone
+      cityName: json['_cityName'] as String? ??
+          json['timezone'] as String? ??
+          'Unknown',
       latitude: (json['latitude'] as num? ?? 0).toDouble(),
       longitude: (json['longitude'] as num? ?? 0).toDouble(),
       currentTemp: (current['temperature_2m'] as num? ?? 0).toDouble(),

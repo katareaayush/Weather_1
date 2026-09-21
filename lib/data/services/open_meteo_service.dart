@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import '../../core/constants/api_endpoints.dart';
 import '../models/weather_model.dart';
 import '../models/air_quality_model.dart';
@@ -74,11 +75,15 @@ class OpenMeteoService {
       );
 
       final data = Map<String, dynamic>.from(response.data as Map);
+      // Pass cityName separately — do NOT overwrite 'timezone' which
+      // Open-Meteo returns as 'Asia/Kolkata' etc. for correct time parsing.
       if (cityName != null) {
-        data['timezone'] = cityName;
+        data['_cityName'] = cityName;
       }
       return WeatherModel.fromJson(data);
     } catch (e) {
+      // Log actual error for debugging instead of silently swallowing
+      debugPrint('🌦️ WEATHER API ERROR: $e');
       // Return realistic mock fallback if network error
       final mock = WeatherModel.mock();
       if (cityName != null) {
@@ -132,6 +137,7 @@ class OpenMeteoService {
       );
       return AirQualityModel.fromJson(Map<String, dynamic>.from(response.data as Map));
     } catch (e) {
+      debugPrint('🌿 AIR QUALITY API ERROR: $e');
       return AirQualityModel.mock();
     }
   }
@@ -160,6 +166,7 @@ class OpenMeteoService {
       );
       return MarineModel.fromJson(Map<String, dynamic>.from(response.data as Map));
     } catch (e) {
+      debugPrint('🌊 MARINE API ERROR: $e');
       return MarineModel.mock();
     }
   }

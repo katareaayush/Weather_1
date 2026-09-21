@@ -46,3 +46,7 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Environment files (API keys — NEVER commit to public repos)
+.env
+.env.*

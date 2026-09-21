@@ -5,7 +5,15 @@ import 'app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
+
+  // Gracefully load .env — app must NOT crash if .env is missing or malformed.
+  // All core APIs (Open-Meteo, Nominatim) are free and require no keys.
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (e) {
+    debugPrint('⚠️ .env file not loaded (this is OK — no API keys required): $e');
+  }
+
   runApp(
     const ProviderScope(
       child: MausamApp(),

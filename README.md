@@ -48,11 +48,12 @@ A Flutter-based mobile weather application that adapts its homepage based on the
    cd mausam
    ```
 
-2. **Add your TomTom key** in `.env`:
+2. **Environment configuration (Optional)**:
+   Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
    ```
-   TOMTOM_API_KEY=your_free_key_here
-   ```
-   Get a free key at https://developer.tomtom.com
+   *Note: All core features work out of the box with zero API keys required.*
 
 3. **Install dependencies**:
    ```bash

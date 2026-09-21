@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import '../data/models/location_model.dart';
@@ -104,7 +105,9 @@ class LocationNotifier extends StateNotifier<AsyncValue<LocationModel>> {
       state = AsyncValue.data(location);
       _ref.read(isDetectingLocationProvider.notifier).state = false;
       return true;
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('📍 GPS / LOCATION ERROR: $e');
+      debugPrint('$stack');
       _ref.read(isDetectingLocationProvider.notifier).state = false;
       if (!silent) {
         final storage = _ref.read(storageServiceProvider);
